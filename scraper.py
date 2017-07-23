@@ -1,18 +1,26 @@
-import urllib
-import httplib2
+"""
+Reads subject URL suffixes from a specified CSV file and visits each
+page, extracting all relevant information
+"""
+
 import sys
-from bs4 import BeautifulSoup
-    #BeautifulSoup/Soupstrainer help to organise the raw html
+import urllib
 import re
-    #regular expressions
-from selenium import webdriver
-    #simulate a web broswer (for redirecting)   
 from urllib.request import urlopen
+
+import httplib2
 import pandas as pd
+
+from bs4 import BeautifulSoup
+
+from selenium import webdriver
 
 BASE_URL = "https://handbook.unimelb.edu.au"
 
 def main(argv):
+    """
+    Reads subject information into a csv
+    """
     path = argv[0]
     df = pd.DataFrame()
     try:

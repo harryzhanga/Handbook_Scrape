@@ -10,6 +10,9 @@ BASE_URL = 'https://handbook.unimelb.edu.au/subjects/undergraduate'
 APPEND_BASE = "?page="
 
 def main():
+    """
+    Main function for writing all subject URLs to csv
+    """
     with open('UnderGraduateSubjects.csv', 'w') as output:
         outputcsv = csv.writer(output)
         outputcsv.writerow(["LinkAppend"])
@@ -26,7 +29,7 @@ def main():
                 break
 
             write_urls(list_path, outputcsv)
-    
+
             page_num += 1
         print("\nScraping done.")
         output.close()
