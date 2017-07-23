@@ -10,22 +10,26 @@ from selenium import webdriver
 from urllib.request import urlopen
 import pandas as pd
 
-BASE_URL = "https://handbook.unimelb.edu.au/2017/"
+BASE_URL = "https://handbook.unimelb.edu.au"
 
 def main(argv):
     path = argv[0]
     df = pd.DataFrame()
-    undergrad_subjects = pd.read_csv(path)
+    try:
+        undergrad_subjects = pd.read_csv(path)
+    except IOError:
+        print("Could not find file.")
+        sys.exit(1)
 
     for link in undergrad_subjects["LinkAppend"]:
         row_num = len(df)
 
-        URL = BASE_URL + link
-        print(URL)
-        df.set_value(row_num, "subject_link", URL)
-        Client = urlopen(URL)
-        page_html = Client.read()
-        Client.close()
+        url = BASE_URL + link
+        print(url)
+        df.set_value(row_num, "subject_link", url)
+        client = urlopen(url)
+        page_html = client.read()
+        client.close()
         page_soup = BeautifulSoup(page_html, "html.parser")
 
         heading = page_soup.findAll("div", {"class", "header--course-and-subject__inner"})
@@ -59,11 +63,11 @@ def main(argv):
             df.set_value(row_num, thead.text.strip(), new_string.strip())
 
         print()
-        URL = BASE_URL + link + "/eligibility-and-requirements"
-        df.set_value(row_num, "ear_link", URL)
-        Client = urlopen(URL)
-        page_html = Client.read()
-        Client.close()
+        url = BASE_URL + link + "/eligibility-and-requirements"
+        df.set_value(row_num, "ear_link", url)
+        client = urlopen(url)
+        page_html = client.read()
+        client.close()
         page_soup = BeautifulSoup(page_html, "html.parser")
 
         requirements = page_soup.findAll("div", {"class":"box"})[1]

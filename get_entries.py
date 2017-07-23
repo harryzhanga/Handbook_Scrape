@@ -26,7 +26,7 @@ def main():
                 break
 
             write_urls(list_path, outputcsv)
-
+    
             page_num += 1
         print("\nScraping done.")
         output.close()
